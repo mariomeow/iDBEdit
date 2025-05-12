@@ -1,0 +1,1 @@
+chrome.devtools.panels.create("iDBEdit", "icons/logo.png", "panel.html")
