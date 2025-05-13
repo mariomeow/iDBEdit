@@ -1,3 +1,4 @@
+import { state } from "./global.svelte"
 import type { Database } from "./types"
 
 export function getDatabases(): Promise<Database[]> {
@@ -93,8 +94,6 @@ export function saveChanges(e: SubmitEvent) {
         chrome.devtools.inspectedWindow.eval(
             `
         (() => {
-         delete window.IDB_stores
-
          const connection = indexedDB.open(${JSON.stringify(database)})
 
             connection.onsuccess = (e) => {
@@ -112,7 +111,6 @@ export function saveChanges(e: SubmitEvent) {
                 }
 
                 transaction.oncomplete = (e) => {
-                    //window.IDB_stores = objectStores
                     database.close()
                 }
 
@@ -123,9 +121,8 @@ export function saveChanges(e: SubmitEvent) {
          })()
             `, () => {
             setTimeout(() => {
-                chrome.devtools.inspectedWindow.eval("window.IDB_stores", (result: {}) => {
-                    resolve(result ?? {})
-                })
+                state.saving = false
+                resolve(null)
             }, 100)
         }
         )

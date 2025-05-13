@@ -132,3 +132,7 @@ main>section {
 .node-input input:focus {
   border: 1px solid white;
 }
+
+button:disabled {
+  filter: brightness(0.85);
+}

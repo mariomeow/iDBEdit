@@ -1,3 +1,18 @@
+<script lang="ts">
+	import { state } from "../lib/global.svelte"
+</script>
+
 <div class="toolbar">
-	<button>Save</button>
+	<button
+		onclick={() => {
+			state.saving = true
+		}}
+		disabled={state.saving}
+	>
+		{#if state.saving}
+			Saving...
+		{:else}
+			Save
+		{/if}
+	</button>
 </div>
