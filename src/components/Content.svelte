@@ -1,20 +1,52 @@
 <script lang="ts">
 	import { activeTab } from "../lib/global.svelte"
-	import { getObjectStores } from "../lib/helper"
+	import { getObjectStores, saveChanges } from "../lib/helper"
 	import Node from "./items/Node.svelte"
+	import Toolbar from "./Toolbar.svelte"
+
+	const hm = {
+		keyvaluepairs: {
+			save: "reznik",
+			bloat: "goat",
+			money: "mad"
+		},
+		keyvaluepairs2: {
+			save: "reznik",
+			bloat: "goat",
+			money: "mad"
+		},
+		keyvaluepairs3: {
+			save: "reznik",
+			bloat: "goat",
+			money: "mad"
+		}
+	}
 </script>
 
+<!---
+
+-->
+
 <section class="content">
-	<h1>WOOHOO! {activeTab.database}</h1>
-	{#await getObjectStores(activeTab.database!) then objectStores}
-		{#each Object.entries(objectStores) as [key, values]}
-			<Node {key} {values} />
-		{/each}
-	{/await}
+	<form onsubmit={saveChanges}>
+		<Toolbar />
+		{#await getObjectStores(activeTab.database!) then objectStores}
+			{#each Object.entries(objectStores) as [key, values], i (i)}
+				<Node {key} {values} />
+			{/each}
+			<input type="hidden" value={activeTab.database} name="database" />
+		{/await}
+	</form>
 </section>
 
 <!---
 <section class="content">
-	<Node />
+	<form onsubmit={saveChanges}>
+		<Toolbar />
+		{#each Object.entries(hm) as [key, values], i (i)}
+			<Node {key} {values} />
+		{/each}
+		<input type="hidden" value={activeTab.database} name="database" />
+	</form>
 </section>
 -->

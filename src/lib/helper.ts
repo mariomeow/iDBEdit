@@ -21,7 +21,7 @@ export function getObjectStores(databaseName: string): Promise<{}> {
             `
                     (() => {
             delete window.IDB_stores
-            let connection = indexedDB.open("${databaseName}")
+            const connection = indexedDB.open(${JSON.stringify(databaseName)})
 
             connection.onsuccess = (e) => {
                 const database = e.target.result
@@ -62,11 +62,72 @@ export function getObjectStores(databaseName: string): Promise<{}> {
             () => {
                 setTimeout(() => {
                     chrome.devtools.inspectedWindow.eval("window.IDB_stores", (result: {}) => {
-
                         resolve(result ?? {})
                     })
                 }, 100)
             }
+        )
+    })
+}
+
+export function saveChanges(e: SubmitEvent) {
+    e.preventDefault()
+
+    const formData = new FormData(e.currentTarget as HTMLFormElement)
+
+    const database = formData.get("database")
+
+    let storesSet: Set<string> | string = new Set()
+    let formEntries: [string, any][] | string = []
+
+    formData.delete("database")
+
+    for (const [key, value] of formData.entries()) {
+        const keyParts = key.split("|")
+
+        storesSet.add(keyParts[0])
+        formEntries.push([key, value])
+    }
+
+    return new Promise((resolve) => {
+        chrome.devtools.inspectedWindow.eval(
+            `
+        (() => {
+         delete window.IDB_stores
+
+         const connection = indexedDB.open(${JSON.stringify(database)})
+
+            connection.onsuccess = (e) => {
+
+                const database = e.target.result
+
+                const transaction = database.transaction(${JSON.stringify(Array.from(storesSet))}, "readwrite")
+                
+                for (const [key, value] of ${JSON.stringify(formEntries)}) {
+                    const keyValues = key.split("|")
+
+                    const store = transaction.objectStore(keyValues[0])
+
+                    store.put(value, keyValues[1])
+                }
+
+                transaction.oncomplete = (e) => {
+                    //window.IDB_stores = objectStores
+                    database.close()
+                }
+
+                transaction.onerror = e => {
+                    database.close()
+                }
+            }
+         })()
+            `, () => {
+            setTimeout(() => {
+                chrome.devtools.inspectedWindow.eval("window.IDB_stores", (result: {}) => {
+                    resolve(result ?? {})
+                })
+            }, 100)
+        }
         )
     })
 }

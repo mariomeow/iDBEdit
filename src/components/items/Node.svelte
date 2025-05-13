@@ -4,7 +4,10 @@
 
 <div class="node">
 	<h1>{key}</h1>
-	<div class="node-input">
-		{values}
-	</div>
+	{#each Object.entries(values) as [key2, value]}
+		<div class="node-input">
+			{key2}
+			<input type="text" name={key + "|" + key2} {value} />
+		</div>
+	{/each}
 </div>
