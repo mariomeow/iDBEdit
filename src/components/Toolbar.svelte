@@ -7,7 +7,6 @@
 		onclick={() => {
 			state.saving = true
 		}}
-		disabled={state.saving}
 	>
 		{#if state.saving}
 			Saving...

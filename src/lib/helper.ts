@@ -1,4 +1,4 @@
-import { state } from "./global.svelte"
+import { data, state } from "./global.svelte"
 import type { Database } from "./types"
 
 export function getDatabases(): Promise<Database[]> {
@@ -71,7 +71,7 @@ export function getObjectStores(databaseName: string): Promise<{}> {
     })
 }
 
-export function saveChanges(e: SubmitEvent) {
+export function saveChanges(e: SubmitEvent): Promise<void> {
     e.preventDefault()
 
     const formData = new FormData(e.currentTarget as HTMLFormElement)
@@ -122,9 +122,25 @@ export function saveChanges(e: SubmitEvent) {
             `, () => {
             setTimeout(() => {
                 state.saving = false
-                resolve(null)
+                resolve()
             }, 100)
         }
+        )
+    })
+}
+
+export function createDatabase(database: string): Promise<void> {
+    return new Promise((resolve) => {
+        chrome.devtools.inspectedWindow.eval(
+            `(() => { 
+                indexedDB.open(${JSON.stringify(database)})
+            })()`,
+            () => {
+                setTimeout(() => {
+                    data.databases = getDatabases()
+                    resolve()
+                }, 100)
+            }
         )
     })
 }

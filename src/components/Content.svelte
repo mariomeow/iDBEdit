@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { activeTab, state } from "../lib/global.svelte"
+	import { activeTab } from "../lib/global.svelte"
 	import { getObjectStores, saveChanges } from "../lib/helper"
 	import Node from "./items/Node.svelte"
 	import Toolbar from "./Toolbar.svelte"

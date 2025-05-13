@@ -6,3 +6,7 @@ export type ActiveTab = {
     index?: number,
     database?: string
 }
+
+export type Data = {
+    databases: Promise<Database[]> | []
+}
