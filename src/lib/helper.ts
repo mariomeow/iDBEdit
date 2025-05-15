@@ -1,4 +1,4 @@
-import { data, state } from "./global.svelte"
+import { data, states } from "./global.svelte"
 import type { Database } from "./types"
 
 export function getDatabases(): Promise<Database[]> {
@@ -121,7 +121,7 @@ export function saveChanges(e: SubmitEvent): Promise<void> {
          })()
             `, () => {
             setTimeout(() => {
-                state.saving = false
+                states.saving = false
                 resolve()
             }, 100)
         }

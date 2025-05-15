@@ -1,9 +1,10 @@
-import type { ActiveTab, Data } from "./types"
+import type { ActiveTab, Data, State } from "./types"
 
 export let activeTab = $state<ActiveTab>({})
 
-export let state = $state<{ saving: boolean }>({
-    saving: false
+export let states = $state<State>({
+    saving: false,
+    creating: false
 })
 
 export let data = $state<Data>({

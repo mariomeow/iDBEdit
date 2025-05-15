@@ -134,5 +134,56 @@ main>section {
 }
 
 button:disabled {
+  pointer-events: none;
   filter: brightness(0.85);
+}
+
+h1 {
+  font-size: 19.5px;
+}
+
+.create {
+  padding: 20px;
+}
+
+.create form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.create form input {
+  padding: 5px;
+  background-color: transparent;
+  border: 1px solid silver;
+  border-radius: 5px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.create form input:focus {
+  border: 1px solid white;
+}
+
+.create form button {
+  width: min-content;
+  background-color: #444;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.create form button:hover {
+  filter: brightness(0.85);
+}
+
+.cfgroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #444;
 }

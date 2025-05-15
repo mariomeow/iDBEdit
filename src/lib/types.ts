@@ -10,3 +10,8 @@ export type ActiveTab = {
 export type Data = {
     databases: Promise<Database[]> | []
 }
+
+export type State = {
+    saving: boolean,
+    creating: boolean
+}

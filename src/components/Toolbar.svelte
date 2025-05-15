@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { state } from "../lib/global.svelte"
+	import { states } from "../lib/global.svelte"
 </script>
 
 <div class="toolbar">
 	<button
 		onclick={() => {
-			state.saving = true
+			states.saving = true
 		}}
 	>
-		{#if state.saving}
+		{#if states.saving}
 			Saving...
 		{:else}
 			Save

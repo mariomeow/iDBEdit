@@ -1,17 +1,23 @@
 <script lang="ts">
-	import { activeTab } from "../lib/global.svelte"
-	import { createDatabase } from "../lib/helper"
+	import { activeTab, states } from "../lib/global.svelte"
 	import type { Database } from "../lib/types"
 
 	let { databases }: { databases: Database[] } = $props()
 </script>
 
 <section class="panel">
-	<button onclick={() => createDatabase("HMM")}>+</button>
+	<button
+		class:darken={states.creating}
+		onclick={() => {
+			states.creating = !states.creating
+			activeTab.database = undefined
+			activeTab.index = undefined
+		}}>+</button
+	>
 	{#each databases as { name }, i (i)}
 		<button
 			class:darken={activeTab.index != null && activeTab.index != undefined && activeTab.index != i}
-			onclick={async () => {
+			onclick={() => {
 				if (activeTab.index == i) {
 					activeTab.index = undefined
 					activeTab.database = undefined
@@ -19,6 +25,8 @@
 					activeTab.index = i
 					activeTab.database = name
 				}
+
+				states.creating = false
 			}}>{name}</button
 		>
 	{/each}

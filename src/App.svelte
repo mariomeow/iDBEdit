@@ -3,7 +3,8 @@
 	import Panel from "./components/Panel.svelte"
 	import { getDatabases } from "./lib/helper"
 	import Content from "./components/Content.svelte"
-	import { activeTab, data } from "./lib/global.svelte"
+	import { activeTab, data, states } from "./lib/global.svelte"
+	import Create from "./components/Create.svelte"
 
 	/*
 	let databases = $state<Promise<Database[] | []>>([
@@ -18,6 +19,9 @@
 		}
 	])
 	*/
+
+	/*
+	 */
 
 	$effect(() => {
 		data.databases = getDatabases()
@@ -34,6 +38,8 @@
 			<Panel databases={databaseList} />
 			{#if activeTab.database}
 				<Content />
+			{:else if states.creating}
+				<Create />
 			{/if}
 		</main>
 	{:else}

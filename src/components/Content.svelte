@@ -24,7 +24,6 @@
 </script>
 
 <!---
-
 -->
 
 <section class="content">
@@ -49,4 +48,5 @@
 		<input type="hidden" value={activeTab.database} name="database" />
 	</form>
 </section>
+
 -->
