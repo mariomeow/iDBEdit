@@ -1,30 +1,28 @@
 <script lang="ts">
+	//@ts-nocheck
 	import Centered from "./components/Centered.svelte"
 	import Panel from "./components/Panel.svelte"
 	import { getDatabases } from "./lib/helper"
 	import Content from "./components/Content.svelte"
-	import { activeTab, data, states } from "./lib/global.svelte"
+	import { activeTab, data, devMode, states } from "./lib/global.svelte"
 	import Create from "./components/Create.svelte"
 
-	/*
-	let databases = $state<Promise<Database[] | []>>([
-		{
-			name: "woohoo"
-		},
-		{
-			name: "xD"
-		},
-		{
-			name: "kodeine"
-		}
-	])
-	*/
-
-	/*
-	 */
-
 	$effect(() => {
-		data.databases = getDatabases()
+		if (devMode) {
+			data.databases = [
+				{
+					name: "woohoo"
+				},
+				{
+					name: "xD"
+				},
+				{
+					name: "kodeine"
+				}
+			]
+		} else {
+			data.databases = getDatabases()
+		}
 	})
 </script>
 

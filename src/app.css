@@ -187,3 +187,12 @@ h1 {
   padding: 10px;
   background-color: #444;
 }
+
+.emptyh1 button {
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 19.5px;
+  text-decoration: underline;
+  border: none;
+  background-color: transparent;
+}

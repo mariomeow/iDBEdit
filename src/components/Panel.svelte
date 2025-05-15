@@ -7,7 +7,7 @@
 
 <section class="panel">
 	<button
-		class:darken={states.creating}
+		class:darken={!states.creating && activeTab.index != undefined}
 		onclick={() => {
 			states.creating = !states.creating
 			activeTab.database = undefined
@@ -16,7 +16,8 @@
 	>
 	{#each databases as { name }, i (i)}
 		<button
-			class:darken={activeTab.index != null && activeTab.index != undefined && activeTab.index != i}
+			class:darken={states.creating ||
+				(activeTab.index != null && activeTab.index != undefined && activeTab.index != i)}
 			onclick={() => {
 				if (activeTab.index == i) {
 					activeTab.index = undefined

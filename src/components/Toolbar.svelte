@@ -3,15 +3,18 @@
 </script>
 
 <div class="toolbar">
-	<button
-		onclick={() => {
-			states.saving = true
-		}}
-	>
+	<button name="save">
 		{#if states.saving}
 			Saving...
 		{:else}
 			Save
+		{/if}
+	</button>
+	<button name="delete">
+		{#if states.deletingDatabase}
+			Deleting...
+		{:else}
+			Delete
 		{/if}
 	</button>
 </div>

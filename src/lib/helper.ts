@@ -1,4 +1,4 @@
-import { data, states } from "./global.svelte"
+import { activeTab, data, states } from "./global.svelte"
 import type { Database } from "./types"
 
 export function getDatabases(): Promise<Database[]> {
@@ -137,6 +137,26 @@ export function createDatabase(database: string): Promise<void> {
             })()`,
             () => {
                 setTimeout(() => {
+                    data.databases = getDatabases()
+                    resolve()
+                }, 100)
+            }
+        )
+    })
+}
+
+export function deleteDatabase(database: string): Promise<void> {
+    return new Promise((resolve) => {
+        chrome.devtools.inspectedWindow.eval(
+            `
+            (() => {
+                indexedDB.deleteDatabase(${JSON.stringify(database)})
+            })()
+            `,
+            () => {
+                setTimeout(() => {
+                    activeTab.database = undefined
+                    activeTab.index = undefined
                     data.databases = getDatabases()
                     resolve()
                 }, 100)
