@@ -77,6 +77,11 @@ main>section {
   filter: brightness(0.6);
 }
 
+.content {
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
 .content form {
   display: grid;
   grid-template-columns: 1fr;
@@ -186,6 +191,10 @@ h1 {
   border-radius: 10px;
   padding: 10px;
   background-color: #444;
+}
+
+.emptyh1 {
+  margin-bottom: 10px;
 }
 
 .emptyh1 button {
