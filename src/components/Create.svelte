@@ -7,13 +7,13 @@
 
 <div class="create">
 	<form
-		onsubmit={(e) => {
+		onsubmit={async (e) => {
 			e.preventDefault()
 
 			if (database.length == 0) return
 
 			button_state = "Creating..."
-			createDatabase(database)
+			await createDatabase(database)
 		}}
 	>
 		<div class="cfgroup">

@@ -7,7 +7,8 @@ export let activeTab = $state<ActiveTab>({})
 export let states = $state<State>({
     saving: false,
     creating: false,
-    deletingDatabase: false
+    deletingDatabase: false,
+    addingObjectStore: false
 })
 
 export let data = $state<Data>({

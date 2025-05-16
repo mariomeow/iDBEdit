@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { activeTab, data, devMode, states } from "../lib/global.svelte"
-	import { deleteDatabase, getObjectStores, saveChanges } from "../lib/helper"
+	import { createObjectStore, deleteDatabase, getObjectStores, saveChanges } from "../lib/helper"
 	import Node from "./items/Node.svelte"
 	import Toolbar from "./Toolbar.svelte"
 
@@ -33,7 +33,7 @@
 	{#await data.fields then objectStores}
 		{#if Object.keys(objectStores).length > 0}
 			<form
-				onsubmit={(e) => {
+				onsubmit={async (e) => {
 					e.preventDefault()
 
 					const attribute: string | null | undefined = e.submitter?.getAttribute("name")
@@ -41,11 +41,15 @@
 					if (attribute) {
 						if (attribute == "save") {
 							states.saving = true
-							saveChanges(e)
+							await saveChanges(e)
 						}
 						if (attribute == "delete") {
 							states.deletingDatabase = true
-							deleteDatabase(activeTab.database!)
+							await deleteDatabase(activeTab.database!)
+						}
+						if (attribute == "add") {
+							states.addingObjectStore = true
+							await createObjectStore(activeTab.database!)
 						}
 					}
 				}}
@@ -60,8 +64,13 @@
 			<h1 class="emptyh1">
 				{activeTab.database} has no stored values,
 				<button
-					onclick={() => {
-						deleteDatabase(activeTab.database!)
+					onclick={async () => {
+						await createObjectStore(activeTab.database!)
+					}}>create a new field?</button
+				>,
+				<button
+					onclick={async () => {
+						await deleteDatabase(activeTab.database!)
 					}}>delete?</button
 				>
 			</h1>

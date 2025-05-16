@@ -33,11 +33,7 @@ export function getObjectStores(databaseName: string): Promise<{}> {
 
                 const transaction = database.transaction(Object.values(database.objectStoreNames), "readonly")
 
-                transaction.onerror = e => {
-                    database.close()
-                }
-
-                transaction.oncomplete = (e) => {
+                transaction.oncomplete = () => {
                     window.IDB_stores = objectStores
                     database.close()
                 }
@@ -110,11 +106,7 @@ export function saveChanges(e: SubmitEvent): Promise<void> {
                     store.put(value, keyValues[1])
                 }
 
-                transaction.oncomplete = (e) => {
-                    database.close()
-                }
-
-                transaction.onerror = e => {
+                transaction.oncomplete = () => {
                     database.close()
                 }
             }
@@ -146,6 +138,9 @@ export function createDatabase(database: string): Promise<void> {
 }
 
 export function deleteDatabase(database: string): Promise<void> {
+    activeTab.database = undefined
+    activeTab.index = undefined
+
     return new Promise((resolve) => {
         chrome.devtools.inspectedWindow.eval(
             `
@@ -155,9 +150,49 @@ export function deleteDatabase(database: string): Promise<void> {
             `,
             () => {
                 setTimeout(() => {
-                    activeTab.database = undefined
-                    activeTab.index = undefined
+                    states.deletingDatabase = false
                     data.databases = getDatabases()
+                    resolve()
+                }, 100)
+            }
+        )
+    })
+}
+
+export function createObjectStore(database: string): Promise<void> {
+    const uuid: string = crypto.randomUUID()
+
+    return new Promise((resolve) => {
+        chrome.devtools.inspectedWindow.eval(
+            `
+            (() => {
+                const connection = indexedDB.open(${JSON.stringify(database)})
+
+                connection.onsuccess = (e) => {
+                const database = e.target.result
+                const oldVersion = database.version
+                database.close()
+
+                const newRequest = indexedDB.open(${JSON.stringify(database)}, oldVersion + 1)
+
+                newRequest.onupgradeneeded = (e) => {
+                    const database2 = e.target.result
+                    
+                    database2.createObjectStore(${JSON.stringify(uuid)})
+                }
+
+                newRequest.onsuccess = (e) => {
+                    const database3 = event.target.result
+                    
+                    database3.close()
+                }
+                }
+            })()
+            `,
+            () => {
+                setTimeout(() => {
+                    states.addingObjectStore = false
+                    data.fields = getObjectStores(database)
                     resolve()
                 }, 100)
             }

@@ -17,4 +17,11 @@
 			Delete
 		{/if}
 	</button>
+	<button name="add">
+		{#if states.addingObjectStore}
+			Adding...
+		{:else}
+			Add
+		{/if}
+	</button>
 </div>

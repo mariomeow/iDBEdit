@@ -15,5 +15,6 @@ export type Data = {
 export type State = {
     saving: boolean,
     creating: boolean,
-    deletingDatabase: boolean
+    deletingDatabase: boolean,
+    addingObjectStore: boolean
 }
