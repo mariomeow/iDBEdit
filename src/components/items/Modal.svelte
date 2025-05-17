@@ -1,7 +1,7 @@
 <script lang="ts">
 	let { name }: { name: string } = $props()
 
-	let enterElement: HTMLButtonElement
+	let enterElement: HTMLButtonElement | undefined = $state()
 </script>
 
 <div class="modal">
@@ -9,8 +9,12 @@
 		type="text"
 		placeholder="Enter object store name"
 		name="objectStoreName"
-		onkeypress={(e: KeyboardEvent) => {
-			if (e.code == "Enter") enterElement.click()
+		onkeydown={(e: KeyboardEvent) => {
+			if (e.code == "Enter") {
+				e.preventDefault()
+
+				if (enterElement) enterElement.click()
+			}
 		}}
 	/>
 	<button {name} bind:this={enterElement}>Enter</button>

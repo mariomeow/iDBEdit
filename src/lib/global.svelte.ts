@@ -1,7 +1,5 @@
 import type { ActiveTab, Data, State } from "./types"
 
-export let devMode = $state<boolean>(false)
-
 export let activeTab = $state<ActiveTab>({})
 
 export let states = $state<State>({

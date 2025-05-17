@@ -40,10 +40,48 @@ main>section {
 }
 
 .centered {
+  margin: 0px auto;
+  width: max-content;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 40px;
+  height: 100%;
+}
+
+.centered .part {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.centered .part .part-group {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 10px;
+}
+
+.centered .part .part-group input {
+  width: 100%;
+  line-height: 30px;
+  outline: none;
+  box-sizing: border-box;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid silver;
+}
+
+.centered .part .part-group button {
   height: 100%;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 10px;
+  background-color: #444;
+  border-radius: 5px;
 }
 
 .panel {
@@ -112,15 +150,6 @@ main>section {
   transform: scale(0.95);
 }
 
-.node {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 10px;
-  background-color: #444;
-  border-radius: 10px;
-}
-
 .node h1 {
   gap: 10px;
   display: flex;
@@ -139,6 +168,15 @@ main>section {
 .node-input button {
   width: 15px;
   height: 15px;
+}
+
+.node {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  background-color: #444;
+  border-radius: 10px;
 }
 
 .node-input input {
@@ -251,4 +289,74 @@ h1 {
   height: 20px;
   border: none;
   background-color: #222;
+}
+
+.part-2 {
+  width: 100%;
+}
+
+.part-2 form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.part-2 form input {
+  width: 100%;
+  line-height: 30px;
+  outline: none;
+  box-sizing: border-box;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid silver;
+}
+
+.part-2 form button {
+  height: 100%;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 10px;
+  background-color: #444;
+  border-radius: 5px;
+}
+
+.field-node h1 {
+  font-size: 15px;
+}
+
+.field-node {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.field-node input {
+  box-sizing: border-box;
+  padding: 5px;
+  background-color: transparent;
+  border: 1px solid silver;
+  border-radius: 5px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.field-node input:focus {
+  border: 1px solid white;
+}
+
+.field-node button {
+  width: min-content;
+  background-color: #222;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.field-node button:hover {
+  filter: brightness(0.85);
 }

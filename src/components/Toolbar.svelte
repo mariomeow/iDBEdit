@@ -22,6 +22,7 @@
 	</button>
 	<button
 		onclick={(e) => {
+			e.preventDefault()
 			if (e.currentTarget == e.target) addModal = !addModal
 		}}
 	>

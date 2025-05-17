@@ -1,29 +1,17 @@
 <script lang="ts">
-	//@ts-nocheck
-	import Centered from "./components/Centered.svelte"
 	import Panel from "./components/Panel.svelte"
-	import { getDatabases } from "./lib/helper"
+	import { createDatabase, getDatabases } from "./lib/helper"
 	import Content from "./components/Content.svelte"
-	import { activeTab, data, devMode, states } from "./lib/global.svelte"
+	import { activeTab, data, states } from "./lib/global.svelte"
 	import Create from "./components/Create.svelte"
+	import Centered from "./components/Centered.svelte"
 
 	$effect(() => {
-		if (devMode) {
-			data.databases = [
-				{
-					name: "woohoo"
-				},
-				{
-					name: "xD"
-				},
-				{
-					name: "kodeine"
-				}
-			]
-		} else {
-			data.databases = getDatabases()
-		}
+		data.databases = getDatabases()
 	})
+
+	let database = $state<string>("")
+	let sendButton: HTMLButtonElement | undefined = $state()
 </script>
 
 <svelte:head>
@@ -43,6 +31,27 @@
 	{:else}
 		<Centered>
 			<h1>No IndexedDB databases found for this website</h1>
+			<div class="part">
+				<h1>Create one:</h1>
+				<div class="part-group">
+					<input
+						type="text"
+						onkeydown={(e) => {
+							if (e.code == "Enter") {
+								if (sendButton) sendButton.click()
+							}
+						}}
+						placeholder="Enter database name"
+						bind:value={database}
+					/>
+					<button
+						bind:this={sendButton}
+						onclick={async () => {
+							await createDatabase(database)
+						}}>Enter</button
+					>
+				</div>
+			</div>
 		</Centered>
 	{/if}
 {/await}

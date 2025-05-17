@@ -29,6 +29,7 @@ export function getObjectStores(databaseName: string): Promise<{}> {
 
                 if(database.objectStoreNames.length == 0) {
                     database.close()
+                    return
                 }
 
                 const transaction = database.transaction(Object.values(database.objectStoreNames), "readonly")
@@ -126,9 +127,21 @@ export function saveChanges(e: SubmitEvent): Promise<void> {
 export function createDatabase(database: string): Promise<void> {
     return new Promise((resolve) => {
         chrome.devtools.inspectedWindow.eval(
-            `(() => { 
-                indexedDB.open(${JSON.stringify(database)})
-            })()`,
+            `(() => {
+    const connection = indexedDB.open(${JSON.stringify(database)}, 1)
+
+    connection.onupgradeneeded = (e) => {
+        const database = e.target.result
+
+        database.createObjectStore("delete_me")
+    }
+
+    connection.onsuccess = (e) => {
+        const database = e.target.result
+
+        database.close()
+    }
+})()`,
             () => {
                 setTimeout(() => {
                     data.databases = getDatabases()
@@ -165,6 +178,8 @@ export function createObjectStore(database: string, e: SubmitEvent): Promise<voi
     const formData = new FormData(e.currentTarget as HTMLFormElement)
 
     const objectStoreName = formData.get("objectStoreName")
+
+    if (objectStoreName?.toString().length == 0) return new Promise((resolve) => resolve())
 
     return new Promise((resolve) => {
         chrome.devtools.inspectedWindow.eval(
@@ -243,7 +258,44 @@ export function deleteObjectStore(database: string, store: string): Promise<void
 }
 
 export function deleteStoreField(database: string, store: string, field: string): Promise<void> {
-    console.log(database, store, field)
+    return new Promise((resolve) => {
+        chrome.devtools.inspectedWindow.eval(
+            `
+            (() => {
+    const connection = indexedDB.open(${JSON.stringify(database)})
+
+    connection.onsuccess = (e) => {
+        const database = e.target.result
+
+        const transaction = database.transaction(${JSON.stringify(store)}, "readwrite")
+
+        transaction.objectStore(${JSON.stringify(store)}).delete(${JSON.stringify(field)})
+
+        transaction.oncomplete = () => {
+            database.close()
+            return
+        }
+    }
+})()
+            `,
+            () => {
+                setTimeout(() => {
+                    data.fields = getObjectStores(database)
+                    resolve()
+                }, 100)
+            }
+        )
+    })
+}
+
+export function createObjectField(database: string, store: string, e: SubmitEvent): Promise<void> {
+    const formData = new FormData(e.currentTarget as HTMLFormElement)
+
+    const field_name = formData.get("fieldName")
+    const field_value = formData.get("fieldValue")
+
+    if (field_name?.toString().length == 0 || field_value?.toString().length == 0) return new Promise((resolve) => resolve())
+
     return new Promise((resolve) => {
         chrome.devtools.inspectedWindow.eval(
             `
@@ -255,7 +307,11 @@ export function deleteStoreField(database: string, store: string, field: string)
 
                     const transaction = database.transaction(${JSON.stringify(store)}, "readwrite")
 
-                    transaction.objectStore(${JSON.stringify(store)}).delete(${JSON.stringify(field)})
+                    transaction.objectStore(${JSON.stringify(store)}).put(${JSON.stringify(field_value)}, ${JSON.stringify(field_name)})
+
+                    transaction.oncomplete = () => {
+                        database.close()
+                    }
                 }
             })()
             `,
