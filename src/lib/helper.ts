@@ -241,3 +241,30 @@ export function deleteObjectStore(database: string, store: string): Promise<void
         )
     })
 }
+
+export function deleteStoreField(database: string, store: string, field: string): Promise<void> {
+    console.log(database, store, field)
+    return new Promise((resolve) => {
+        chrome.devtools.inspectedWindow.eval(
+            `
+            (() => {
+                const connection = indexedDB.open(${JSON.stringify(database)})
+
+                connection.onsuccess = (e) => {
+                    const database = e.target.result
+
+                    const transaction = database.transaction(${JSON.stringify(store)}, "readwrite")
+
+                    transaction.objectStore(${JSON.stringify(store)}).delete(${JSON.stringify(field)})
+                }
+            })()
+            `,
+            () => {
+                setTimeout(() => {
+                    data.fields = getObjectStores(database)
+                    resolve()
+                }, 100)
+            }
+        )
+    })
+}

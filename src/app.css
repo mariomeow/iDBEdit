@@ -132,6 +132,15 @@ main>section {
   gap: 10px;
 }
 
+.node-input h1 {
+  font-size: 13px;
+}
+
+.node-input button {
+  width: 15px;
+  height: 15px;
+}
+
 .node-input input {
   padding: 5px;
   background-color: transparent;
