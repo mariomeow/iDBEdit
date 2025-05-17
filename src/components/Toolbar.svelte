@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { states } from "../lib/global.svelte"
+	import Modal from "./items/Modal.svelte"
+
+	let addModal = $state<boolean>(false)
 </script>
 
 <div class="toolbar">
@@ -17,11 +20,18 @@
 			Delete
 		{/if}
 	</button>
-	<button name="add">
+	<button
+		onclick={(e) => {
+			if (e.currentTarget == e.target) addModal = !addModal
+		}}
+	>
 		{#if states.addingObjectStore}
 			Adding...
 		{:else}
 			Add
 		{/if}
 	</button>
+	{#if addModal}
+		<Modal name="add" />
+	{/if}
 </div>

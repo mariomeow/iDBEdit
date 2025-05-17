@@ -82,8 +82,10 @@ export function saveChanges(e: SubmitEvent): Promise<void> {
     for (const [key, value] of formData.entries()) {
         const keyParts = key.split("|")
 
-        storesSet.add(keyParts[0])
-        formEntries.push([key, value])
+        if (keyParts.length == 2) {
+            storesSet.add(keyParts[0])
+            formEntries.push([key, value])
+        }
     }
 
     return new Promise((resolve) => {
@@ -159,8 +161,10 @@ export function deleteDatabase(database: string): Promise<void> {
     })
 }
 
-export function createObjectStore(database: string): Promise<void> {
-    const uuid: string = crypto.randomUUID()
+export function createObjectStore(database: string, e: SubmitEvent): Promise<void> {
+    const formData = new FormData(e.currentTarget as HTMLFormElement)
+
+    const objectStoreName = formData.get("objectStoreName")
 
     return new Promise((resolve) => {
         chrome.devtools.inspectedWindow.eval(
@@ -178,7 +182,7 @@ export function createObjectStore(database: string): Promise<void> {
                 newRequest.onupgradeneeded = (e) => {
                     const database2 = e.target.result
                     
-                    database2.createObjectStore(${JSON.stringify(uuid)})
+                    database2.createObjectStore(${JSON.stringify(objectStoreName)})
                 }
 
                 newRequest.onsuccess = (e) => {
@@ -192,6 +196,44 @@ export function createObjectStore(database: string): Promise<void> {
             () => {
                 setTimeout(() => {
                     states.addingObjectStore = false
+                    data.fields = getObjectStores(database)
+                    resolve()
+                }, 100)
+            }
+        )
+    })
+}
+
+export function deleteObjectStore(database: string, store: string): Promise<void> {
+    return new Promise((resolve) => {
+        chrome.devtools.inspectedWindow.eval(
+            `
+            (() => {
+                const connection = indexedDB.open(${JSON.stringify(database)})
+
+                connection.onsuccess = (e) => {
+                const database = e.target.result
+                const oldVersion = database.version
+                database.close()
+
+                const newRequest = indexedDB.open(${JSON.stringify(database)}, oldVersion + 1)
+
+                newRequest.onupgradeneeded = (e) => {
+                    const database2 = e.target.result
+                    
+                    database2.deleteObjectStore(${JSON.stringify(store)})
+                }
+
+                newRequest.onsuccess = (e) => {
+                    const database3 = event.target.result
+                    
+                    database3.close()
+                }
+                }
+            })()
+            `,
+            () => {
+                setTimeout(() => {
                     data.fields = getObjectStores(database)
                     resolve()
                 }, 100)

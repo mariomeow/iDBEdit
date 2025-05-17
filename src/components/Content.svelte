@@ -49,7 +49,7 @@
 						}
 						if (attribute == "add") {
 							states.addingObjectStore = true
-							await createObjectStore(activeTab.database!)
+							await createObjectStore(activeTab.database!, e)
 						}
 					}
 				}}
@@ -63,11 +63,6 @@
 		{:else}
 			<h1 class="emptyh1">
 				{activeTab.database} has no stored values,
-				<button
-					onclick={async () => {
-						await createObjectStore(activeTab.database!)
-					}}>create a new field?</button
-				>,
 				<button
 					onclick={async () => {
 						await deleteDatabase(activeTab.database!)
