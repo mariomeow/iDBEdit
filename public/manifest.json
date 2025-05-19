@@ -3,5 +3,8 @@
     "name": "iDBEdit",
     "version": "1.0",
     "description": "Create & manage IndexedDB records",
-    "devtools_page": "devtools.html"
+    "devtools_page": "devtools.html",
+    "icons": {
+        "48": "logo.png"
+    }
 }
