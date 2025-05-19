@@ -1,6 +1,6 @@
 # iDBEdit
 
-Create & manage IndexedDB records
+Create & manage IndexedDB records in Chromium-based browsers
 
 # Important notes
 
