@@ -1,47 +1,16 @@
-# Svelte + TS + Vite
+# iDBEdit
 
-This template should help get you started developing with Svelte and TypeScript in Vite.
+Create & manage IndexedDB records
 
-## Recommended IDE Setup
+# Important notes
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+This extension only works in Chromium-based browsers
 
-## Need an official Svelte framework?
+# Visual examples
 
-Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
-
-## Technical considerations
-
-**Why use this over SvelteKit?**
-
-- It brings its own routing solution which might not be preferable for some users.
-- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
-
-This template contains as little as possible to get started with Vite + TypeScript + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
-
-Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
-
-**Why `global.d.ts` instead of `compilerOptions.types` inside `jsconfig.json` or `tsconfig.json`?**
-
-Setting `compilerOptions.types` shuts out all other types not explicitly listed in the configuration. Using triple-slash references keeps the default TypeScript setting of accepting type information from the entire workspace, while also adding `svelte` and `vite/client` type information.
-
-**Why include `.vscode/extensions.json`?**
-
-Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
-
-**Why enable `allowJs` in the TS template?**
-
-While `allowJs: false` would indeed prevent the use of `.js` files in the project, it does not prevent the use of JavaScript syntax in `.svelte` files. In addition, it would force `checkJs: false`, bringing the worst of both worlds: not being able to guarantee the entire codebase is TypeScript, and also having worse typechecking for the existing JavaScript. In addition, there are valid use cases in which a mixed codebase may be relevant.
-
-**Why is HMR not preserving my local component state?**
-
-HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/rixo/svelte-hmr#svelte-hmr).
-
-If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
-
-```ts
-// store.ts
-// An extremely simple external store
-import { writable } from 'svelte/store'
-export default writable(0)
-```
+![{D335545C-9013-4C99-B166-7AB8CCE401F3}](https://github.com/user-attachments/assets/b0c8e82d-cb7d-4e9d-a7a4-7d545f0ab1e3)
+![{1C3AAAB9-ACAF-4275-9CB6-FF3879EE70AC}](https://github.com/user-attachments/assets/930d8da5-80ed-4360-8592-dd73efb191a0)
+![{1B654AD2-CE63-4A18-8233-6BA0EADF262B}](https://github.com/user-attachments/assets/3a9ca5b7-f5e5-4585-8bce-c6c0feb5f6e8)
+![{9A9E1E94-79A1-4F23-A5EC-50E4E4936847}](https://github.com/user-attachments/assets/5ff04c25-85bf-4ff4-80a0-464b861f5932)
+![{F972D231-981C-4ED0-8129-BD9D331A9108}](https://github.com/user-attachments/assets/952f1797-e1f6-44b1-adeb-c397649aa4b4)
+![{1C3ABA94-D681-4556-9E30-23944255C99B}](https://github.com/user-attachments/assets/43ecaaed-93ce-4f7a-b6e6-b12cb8df6271)
