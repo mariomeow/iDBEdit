@@ -31,7 +31,7 @@
 					}}>x</button
 				>
 			</h1>
-			<input type="text" name={key + "|" + key2} {value} />
+			<input type="text" name={key + "|" + key2} value={JSON.stringify(value)} />
 		</div>
 	{/each}
 	<FieldNode store={key} />
